@@ -8,12 +8,12 @@ namespace Domain.Models
     public class Product
     {
         /// <summary>
-        /// Unique Identfier for an Entity
+        /// Unique Identifier for an Entity
         /// </summary>
-        public Guid Id => Guid.NewGuid();
+        public Guid Id {  get; set; }
         
         /// <summary>
-        /// Product Name, Unique for a Pproduct
+        /// Product Name, Unique for a Product
         /// </summary>
         public required string Name { get; set; }
         public required Category Category { get; set; }

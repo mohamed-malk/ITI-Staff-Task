@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ITI_Staff_Task
 {
+    /// <summary>
+    /// Const Values 
+    /// </summary>
     public static class Utility
     {
         public const string Red = "\u001b[31m";

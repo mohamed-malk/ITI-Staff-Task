@@ -9,13 +9,21 @@ namespace Infrastructure.Repositories
 {
     public class AdminRepository : IAdminRepository
     {
+        private readonly ApplicationContext _context;
         private IProductRepository _productRepository;
 
-        public AdminRepository()
+        public AdminRepository(ApplicationContext context)
         {
-            _productRepository = new ProductRepository();
+            _context = context;
+            _productRepository = new ProductRepository(_context);
         }
 
         public IProductRepository ProductRepository => _productRepository;
+
+
+        public async Task<int> SaveChanges()
+        {
+            return await _context.SaveChangesAsync();
+        }
     }
 }

@@ -2,15 +2,16 @@
 using Domain.Exceptions;
 using Domain.IRepositories;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly ICollection<Product> _products;
-        public ProductRepository()
+        private readonly DbSet<Product> _products;
+        public ProductRepository(ApplicationContext context)
         {
-            _products = new List<Product>() { new() { Category = Category.Phone, Name = "Test", Price = 1000, StockQuantity = 10 } };
+            _products = context.Set<Product>();
         }
 
         private Task<Product> GetProduct(Product? product, object by)
@@ -30,7 +31,7 @@ namespace Infrastructure.Repositories
             }
             catch (NotFoundException)
             {
-                _products.Add(product);
+                await _products.AddAsync(product);
             }
         }
 
@@ -52,22 +53,22 @@ namespace Infrastructure.Repositories
                 (_products.ToList());
         }
 
-        public Task<Product> Get(Guid id)
+        public async Task<Product> Get(Guid id)
         {
-            var product = _products.SingleOrDefault(p => p.Id.Equals(id));
-            return GetProduct(product, id);
+            var product = await _products.FindAsync(id);
+            return await GetProduct(product, id);
         }
 
-        public Task<Product> Get(string name)
+        public async Task<Product> Get(string name)
         {
-            var product = _products.SingleOrDefault(p => p.Name.Equals(name));
-            return GetProduct(product, name);
+            var product = await _products.SingleOrDefaultAsync(p => p.Name.Equals(name));
+            return await GetProduct(product, name);
         }
 
-        public Task<IEnumerable<Product>> Get(Category category)
+        public async Task<IEnumerable<Product>> Get(Category category)
         {
             var products = _products.Where(p => p.Category.Equals(category));
-            return Task.FromResult(products);
+            return await products.ToListAsync();
         }
     }
 }

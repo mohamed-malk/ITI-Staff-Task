@@ -1,14 +1,12 @@
 ﻿using Domain.Enums;
 using Domain.Models;
 using Service.Abstraction;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ITI_Staff_Task.Views
 {
+    /// <summary>
+    /// Represent the Product View in Console APP
+    /// </summary>
     public class ProductScreen
     {
         private readonly IAdminService _service;
@@ -23,6 +21,10 @@ namespace ITI_Staff_Task.Views
             return (Category)Enum.Parse(typeof(Category), categoryName);
         }
 
+        /// <summary>
+        /// Display the Data of <paramref name="product"/>
+        /// </summary>
+        /// <param name="product"></param>
         private void Show(Product product)
         {
             Console.Write($"Category is {product.Category} \n");
@@ -32,6 +34,9 @@ namespace ITI_Staff_Task.Views
             Console.Write($"Inventory is {product.Inventory} \n");
         }
 
+        /// <summary>
+        /// Display the Section of Fetching Data from User
+        /// </summary>
         public async Task Add()
         {
             Console.Write($"Select Category {Home.ShowCategories()} : ");
@@ -48,6 +53,10 @@ namespace ITI_Staff_Task.Views
             Show(product); 
             Console.Write(Utility.BreakLine);
         }
+
+        /// <summary>
+        /// Display List the Data of <see cref="Product"/>
+        /// </summary>
         public async Task Show()
         {
             var products = await _service.ProductService.GetAll();
@@ -56,8 +65,13 @@ namespace ITI_Staff_Task.Views
                 Show(product);
                 Console.Write($"\n\t\t\t\t ----------------------------------------- \n");
             }
+            Console.WriteLine($"Total Inventory = {_service.ProductService.TotalInventory}");
             Console.Write(Utility.BreakLine);
         }
+
+        /// <summary>
+        /// Display the Section of Changing Quantity of <see cref="Product"/>
+        /// </summary>
         public async Task ChangeQuantity()
         {
             Console.Write($"Name : ");

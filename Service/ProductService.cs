@@ -29,7 +29,7 @@ namespace Service
                 StockQuantity = quantity
             };
             await _adminRepository.ProductRepository.Add(product);
-
+            await _adminRepository.SaveChanges();
             return product;
         }
 
@@ -48,6 +48,8 @@ namespace Service
                 throw new NotAllowedException("The new Quantity will be negative");
            
             product.StockQuantity = newQuantity;
+            await _adminRepository.SaveChanges();
+
             return product;
         }
 
